@@ -108,6 +108,10 @@ function App() {
         showResult: false,
         isCorrect: null,
       });
+      // Прокрутка вверх при переходе на новый вопрос
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
   };
 
@@ -115,6 +119,16 @@ function App() {
   useEffect(() => {
     if (appState === 'quiz' && quizState.currentQuestionIndex < questions.length) {
       shuffleQuestionOptions(quizState.currentQuestionIndex);
+    }
+  }, [quizState.currentQuestionIndex, appState]);
+
+  // Прокрутка вверх при изменении вопроса
+  useEffect(() => {
+    if (appState === 'quiz') {
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 150);
+      return () => clearTimeout(timer);
     }
   }, [quizState.currentQuestionIndex, appState]);
 
