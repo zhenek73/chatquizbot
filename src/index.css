@@ -39,14 +39,16 @@
 
 .snowflake {
   position: fixed;
-  top: -10px;
   color: rgba(255, 255, 255, 0.3);
   font-size: 1em;
   font-family: Arial;
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  animation: snowfall linear infinite;
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   pointer-events: none;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 @layer utilities {

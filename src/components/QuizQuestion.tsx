@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { Question } from '../types';
 import { Header } from './Header';
 import { ProgressBar } from './ProgressBar';
@@ -35,6 +36,24 @@ export const QuizQuestion = ({
     if (answer === null) return null;
     return answer === true ? 'correct' : 'incorrect';
   });
+
+  // Ref для кнопки "Далее"
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Прокрутка к кнопке "Далее" при показе результата
+  useEffect(() => {
+    if (showResult && nextButtonRef.current) {
+      // Небольшая задержка для завершения анимации результата
+      const timeoutId = setTimeout(() => {
+        nextButtonRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }, 400);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [showResult]);
 
   return (
     <motion.div
@@ -159,7 +178,7 @@ export const QuizQuestion = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mt-6"
+            className="mt-6 mb-8"
           >
             <div
               className={`
@@ -188,6 +207,7 @@ export const QuizQuestion = ({
             </div>
 
             <motion.button
+              ref={nextButtonRef}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
